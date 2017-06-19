@@ -1,0 +1,27 @@
+linux@ubuntu:~/git/example/thread$ g++ -o test_2 test_2.cpp 
+test_2.cpp:12:34: error: expected primary-expression before ‘)’ token
+ void * print_message(*thread_data)
+                                  ^
+test_2.cpp:13:1: error: expected ‘,’ or ‘;’ before ‘{’ token
+ {
+ ^
+test_2.cpp: In function ‘int main()’:
+test_2.cpp:29:22: warning: deprecated conversion from string constant to ‘char*’ [-Wwrite-strings]
+   message[i].message = "this is message";
+                      ^
+test_2.cpp:30:74: error: invalid conversion from ‘void*’ to ‘void* (*)(void*)’ [-fpermissive]
+   rc = pthread_create(&threads[i], NULL,print_message,(void *)&message[i]);
+                                                                          ^
+In file included from /usr/include/i386-linux-gnu/c++/4.8/bits/gthr-default.h:35:0,
+                 from /usr/include/i386-linux-gnu/c++/4.8/bits/gthr.h:148,
+                 from /usr/include/c++/4.8/ext/atomicity.h:35,
+                 from /usr/include/c++/4.8/bits/ios_base.h:39,
+                 from /usr/include/c++/4.8/ios:42,
+                 from /usr/include/c++/4.8/ostream:38,
+                 from /usr/include/c++/4.8/iostream:39,
+                 from test_2.cpp:1:
+/usr/include/pthread.h:244:12: error:   initializing argument 3 of ‘int pthread_create(pthread_t*, const pthread_attr_t*, void* (*)(void*), void*)’ [-fpermissive]
+ extern int pthread_create (pthread_t *__restrict __newthread,
+
+ 
+ 
