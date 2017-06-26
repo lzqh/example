@@ -1,0 +1,73 @@
+freedom@robot:~/git/example/data_structure/list$ gcc -o main.c list_base.c 
+list_base.c: In function ‘create_list’:
+list_base.c:5:19: warning: incompatible implicit declaration of built-in function ‘malloc’ [enabled by default]
+  list = (list_t *)malloc(sizeof(struct list));
+                   ^
+list_base.c:8:3: warning: return makes pointer from integer without a cast [enabled by default]
+   return -1
+
+由于代码中使用了malloc函数和字符串函数，编译时出现错误
+
+warning: incompatible implicit declaration of built-in function ‘malloc’
+warning: incompatible implicit declaration of built-in function ‘bzero’
+warning: incompatible implicit declaration of built-in function ‘strncpy                                                                                                 ’
+warning: incompatible implicit declaration of built-in function ‘strlen’
+
+
+解决办法：
+
+        加入头文件即可
+#include<stdlib.h>
+#include<string.h>
+
+
+freedom@robot:~/git/example/data_structure/list$ gcc -o main.c list_base.c 
+list_base.c: In function ‘create_list’:
+list_base.c:9:3: warning: return makes pointer from integer without a cast [enabled by default]
+   return -1;
+   ^
+   这是因为函数的返回类型是指针类型，在函数中 return -1  ，会产生上述警告。
+   
+list_base.c: In function ‘add_to_list’:
+list_base.c:33:11: error: invalid operands to binary == (have ‘header_t’ and ‘void *’)
+  if(header==NULL)
+           ^
+ header 是结构体变量，null是指针变量。不能比较
+ 
+list_base.c:38:13: error: incompatible types when assigning to type ‘struct header *’ from type ‘header_t’
+  q->header  = header;
+             ^
+ 一个结构体指针，一个是结构体，不能赋值   
+  q->header  = header;     这样不对    
+ q->header  =& header;
+ 
+ 
+list_base.c: In function ‘remove_from_list’:
+list_base.c:49:24: error: invalid operands to binary != (have ‘struct header *’ and ‘header_t’)
+  while(p->next->header != header)
+                        ^
+list_base.c:52:2: error: incompatible type for argument 1 of ‘free’
+  free(header);
+  ^
+In file included from list_base.h:6:0,
+                 from list_base.c:1:
+/usr/include/stdlib.h:483:13: note: expected ‘void *’ but argument is of type ‘header_t’
+ extern void free (void *__ptr) __THROW;
+ 
+ 
+ 
+ freedom@robot:~/git/example/data_structure/list$ gcc -o list main.c list_base.c main.c: In function ‘main’:
+main.c:11:2: error: incompatible type for argument 1 of ‘add_to_list’
+  ret = add_to_list(m_header);
+  ^
+In file included from main.c:1:0:
+list_base.h:24:5: note: expected ‘struct list_t *’ but argument is of type ‘header_t’
+ int add_to_list(list_t *list, header_t header);
+     ^
+main.c:11:2: error: too few arguments to function ‘add_to_list’
+  ret = add_to_list(m_header);
+  ^
+In file included from main.c:1:0:
+list_base.h:24:5: note: declared here
+ int add_to_list(list_t *list, header_t header);
+ 
